@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>RHBot - Chat</title>
+  <style> 
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #6dd5ed, #2193b0);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    #chat {
+      width: 600px;
+      height: 700px;
+      max-height: 90vh;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #header {
+      background: #2193b0;
+      color: white;
+      padding: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    #messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #f9f9f9;
+    }
+
+    .message {
+      margin: 10px 0;
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      line-height: 1.3;
+      word-wrap: break-word;
+      display: inline-block;
+    }
+
+    .bot {
+      background: #e0f7fa;
+      color: #006064;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+
+    .user {
+      background: #dcedc8;
+      color: #33691e;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+      text-align: right;
+    }
+
+    #input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    #userInput {
+      flex: 1;
+      border: none;
+      padding: 15px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      background: #2193b0;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #197a91;
+    }
+
+    .opcao-btn {
+      background: #f1f8e9;
+      color: #33691e;
+      border-radius: 20px;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .opcao-btn:hover {
+      background: #c8e6c9;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <div id="header">🤖 RHBot</div>
+    <div id="messages">
+      <div class="message bot">Olá! Me chamo RHBot como posso te ajudar?</div>
+    </div>
+    <div id="input-area">
+      <input type="text" id="userInput" placeholder="Digite aqui...">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const msg = input.value.trim();
+
+      if (msg === "") return;
+
+      addMessage(msg, "user");
+      input.value = "";
+
+      const resposta = responder(msg);
+      setTimeout(() => addMessage(resposta, "bot"), 500);
+    }
+
+    function addMessage(text, type) {
+      const messagesDiv = document.getElementById('messages');
+
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.justifyContent = type === 'user' ? 'flex-end' : 'flex-start';
+
+      const div = document.createElement('div');
+      div.className = 'message ' + type;
+
+      if (type === 'bot') {
+        div.innerHTML = text.replace(/\n/g, "<br>"); // quebra linha só nas mensagens do bot
+      } else {
+        div.textContent = text; // mensagens do usuário continuam seguras
+      }
+
+      container.appendChild(div);
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function responder(msg) {
+      msg = msg.toLowerCase();
+
+      if (msg.includes("benefício") || msg.includes("beneficios") || msg.includes("benefiocios") || msg.includes("benefiocio")) {
+        setTimeout(() => mostrarBotoesMaisOpcoes(), 1000);
+        return "Sim, gostaria de saber mais sobre algum benefício em específico?";
+      }
+
+      if (msg.includes("contrato de trabalho")) {
+        return `Você pode acessar o seu contrato de trabalho pelo portal interno da empresa. É só entrar em www.empresaX.com/portalrh, fazer login com seu CPF e a senha provisória que enviamos por e-mail. Qualquer problema no acesso, estamos aqui pra ajudar!`
+      }
+
+      if (msg.includes("horário de trabalho") || msg.includes("trabalho") || msg.includes("horário") || msg.includes("horario") || msg.includes("horario de trabalho")) {
+        return `Nossa jornada padrão é de segunda a sexta-feira, das 9h às 18h, com 1 hora de pausa para o almoço. Alguns setores têm horários flexíveis — confirme com sua liderança se for o caso! 😊`
+      }
+
+      if (msg.includes("ferias") || msg.includes("férias")) {
+        return `Ótima pergunta! Você tem direito a 30 dias de férias por ano, após 12 meses de trabalho. As datas são combinadas com sua liderança. Feriados seguem o calendário nacional e os regionais da nossa sede. Se tiver dúvidas sobre folgas específicas, posso consultar pra você!`
+      }
+
+      if (msg.includes("integração") || msg.includes("integracao")) {
+        return `No dia de integração, você vai: \n✔️ Conhecer a cultura e valores da empresa \n✔️ Ter um tour presencial pelos setores \n✔️ Assistir a apresentações sobre benefícios e políticas internas \n✔️ Receber orientações de TI e segurança \n✔️ Conhecer sua equipe e liderança \nTudo isso pra você se sentir em casa desde o primeiro dia! 🏠`
+      }
+
+      if (msg.includes("como funciona") || msg.includes("ferramentas")) {
+        return `Com certeza! Você terá uma orientação com o time de TI e sua equipe logo nos primeiros dias. Eles vão te mostrar todas as ferramentas e sistemas que usamos, além de tirar dúvidas sobre o dia a dia. Ninguém fica perdido por aqui! 🚀`
+      }
+
+      if (msg.includes("código de vestimenta") || msg.includes("codigo de vestimenta") || msg.includes("vestimenta") ) {
+        return `Sim! Nossa política de vestimenta é casual, mas com bom senso. Evitamos roupas muito informais como regatas, chinelos ou shorts curtos. Se houver reuniões importantes ou visita de clientes, vale optar por algo mais formal. 😉`
+      }
+
+      if (msg.includes("documentos para admissão") || msg.includes("documentos para admissao") || msg.includes("admissão") || msg.includes("admissao")) {
+        return `Para que possamos concluir seu processo de admissão direitinho, precisamos que você envie ou entregue os seguintes documentos:
+          \n🔸Documento de identidade com foto (RG ou CNH).
+          \n🔸CPF.
+          \n🔸Carteira de Trabalho (física ou digital).
+          \n🔸Comprovante de residência atualizado.
+          \n🔸Comprovante de escolaridade.
+          \n🔸Certidão de nascimento ou casamento.
+          \n🔸Cartão do PIS/PASEP (caso já tenha).
+          \n🔸Certificado de reservista (para homens).
+          \n🔸Dados bancários (banco, agência e conta para depósito do salário).
+          \n🔸Foto 3x4.
+          \n🔸Documentos dos dependentes (se for incluir no plano de saúde ou no IR).
+          \nSe tiver qualquer dúvida ou dificuldade para conseguir algum documento, pode falar com a gente! Estamos aqui pra te ajudar nesse início. Seja bem-vindo(a)!`
+      }
+
+      if (msg.includes("entregar os documentos")) {
+        return `Sabemos que nem sempre dá pra trazer tudo pessoalmente, então aceitamos o envio dos documentos por e-mail também — especialmente nessa fase inicial. O importante é que os arquivos estejam legíveis e, de preferência, em formato PDF ou imagem (como JPG ou PNG). \nSe tiver qualquer dúvida sobre como escanear ou enviar, pode contar com a gente! E caso prefira entregar tudo pessoalmente, será um prazer te receber também. O ideal é escolher o que for mais prático pra você nesse momento!`
+      }
+
+      if (msg.includes("perder documento") || msg.includes("perder algum documento")) {
+        return `Fica tranquilo(a), isso pode acontecer! \nSe você perdeu algum documento que entregou ao RH, o ideal é entrar em contato com a gente o quanto antes. Vamos verificar se temos uma cópia no sistema ou se será necessário que você envie novamente. \nCaso precise tirar uma segunda via de algum documento oficial, também podemos te orientar sobre como fazer isso. \nEstamos aqui pra facilitar e apoiar Pode contar com a gente em cada passo!`
+      }
+
+      if (msg.includes("mudar banco") || msg.includes("mudar de banco") || msg.includes("mudar agencia") || msg.includes("mudar de agencia") || msg.includes("mudar agência") || msg.includes("mudar de agência")) {
+        return `Se você mudou de banco ou agência, é super importante avisar o RH o quanto antes, tá? 😊 \nAssim, a gente consegue atualizar seus dados no sistema e garantir que o pagamento do seu salário continue caindo certinho, sem atrasos. \nVocê pode enviar os novos dados por e-mail ou falar diretamente com a pessoa do RH responsável. Se tiver dúvida sobre quais informações são necessárias, a gente te ajuda!`
+      }
+
+      if (msg.includes("registro de dependentes")) {
+        return `Se você quiser registrar dependentes — seja para o plano de saúde, imposto de renda ou outros benefícios — é só nos enviar os seguintes documentos:
+          \n🔸Certidão de nascimento (no caso de filhos).
+          \n🔸RG e CPF do dependente (se já tiverem).
+          \n🔸Certidão de casamento ou união estável, se for cônjuge.
+          \nEm alguns casos, pode ser necessário um comprovante de
+          residência ou documento que comprove a dependência financeira.
+          \nMas não se preocupe!
+          \nCaso tenha dúvida sobre algum documento ou sobre quem pode ser considerado dependente, é só falar com o RH. A gente está aqui pra te orientar e facilitar esse processo!`
+      }
+
+      if (msg.includes("prazo de entrega documentos") || msg.includes("prazo de entrega de documentos")) {
+        return `Sim, existe um prazo, mas pode ficar tranquilo(a)! \nApós a contratação, o ideal é que você entregue todos os documentos o quanto antes — de preferência nos primeiros dias — para que a gente possa finalizar seu cadastro e liberar tudo certinho, como folha de pagamento, benefícios e acesso aos sistemas. \nSe por algum motivo você precisar de mais tempo para conseguir algum documento específico, é só avisar o RH. \nEstamos aqui pra ajudar e encontrar juntos a melhor solução. O mais importante é manter a comunicação aberta, combinado?`
+      }
+
+      if (msg.includes("atualizar meus dados") || msg.includes("atulizar dados pessoais")) {
+        return `Você pode atualizar seus dados pessoais diretamente com o RH! \nBasta enviar um e-mail ou, se preferir, comunicar pessoalmente. \nVamos garantir que todas as suas informações fiquem sempre atualizadas no nosso sistema, para que não haja problemas com comunicação, benefícios e outros processos importantes. \nSe precisar de ajuda para atualizar algo ou tiver alguma dúvida, é só falar com a gente! Estamos sempre à disposição para te apoiar.`
+      }
+
+      if (msg.includes("meus dados e documentos ficam seguros") || msg.includes("meus dados e documentos ficam confidenciais")) {
+        return `Com certeza!\n A segurança e a confidencialidade dos seus dados são super importantes para nós. Todos os documentos e informações que você compartilhar conosco ficam armazenados de maneira segura, de acordo com as normas de proteção de dados. \nO nosso sistema é protegido por medidas rigorosas para garantir que seus dados estejam sempre acessíveis apenas para quem realmente precisa deles. Se você tiver qualquer preocupação ou dúvida sobre a segurança, estamos sempre aqui para esclarecer e garantir sua tranquilidade.`
+      }
+
+      if (msg.includes("vagas disponiveis") || msg.includes("vagas disponíveis") || msg.includes("vagas")) {
+        setTimeout(() => mostrarBotoesMaisOpcoesVagas(), 1000);
+        return "Temos sim, gostaria de saber mais sobre algum em específico?";
+      }
+
+
+
+      return "Desculpe, não entendi. Tente perguntar novamente!!!";
+    }
+
+    function mostrarBotoesMaisOpcoesVagas() {
+      const messagesDiv = document.getElementById("messages");
+
+      // Botões de opções de Vagas
+      const opcoes = [
+        { 
+          texto: "Assistente Administrativo", 
+          resposta: " <strong>Assistente Administrativo:</strong> \n→ Formação em Administração ou áreas relacionadas. \n→ Experiência em escritório e apoio administrativo. \n→ Habilidades em organização, comunicação e atendimento ao cliente. \n→ Conhecimento em software de gestão administrativa." },
+        { 
+          texto: "Gerente de Projetos", 
+          resposta: " <strong>Gerente de Projetos:</strong> \n→ Formação em Administração, Engenharia ou áreas relacionadas. \n→ Experiência em gestão de projetos e liderança de equipes. \n→ Habilidades em planejamento, organização e comunicação. \n→ Certificação em gestão de projetos (PMI) é um diferencial." },
+        { 
+          texto: "Analista Financeiro", 
+          resposta: " <strong>Analista Financeiro:</strong> \n→ Formação em Ciências Contábeis, Administração ou áreas relacionadas. \n→ Experiência em análise financeira e planejamento orçamentário. \n→ Habilidades em análise de dados e tomada de decisões. \n→ Conhecimento em software de gestão financeira." },
+        { 
+          texto: "Coordenador de Administração", 
+          resposta: " <strong>Coordenador de Administração:</strong> \n→ Formação em Administração ou áreas relacionadas. \n→ Experiência em coordenação de equipes e processos administrativos. \n→ Habilidades em liderança, comunicação e organização. \n→ Conhecimento em software de gestão administrativa." },
+        { 
+          texto: "❌ Nada, obrigado", 
+          resposta: "" }
+      ];
+
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+
+      opcoes.forEach(opcao => {
+          const btn = document.createElement("button");
+          btn.className = "opcao-btn";
+          btn.textContent = opcao.texto;
+          btn.onclick = () => {
+            addMessage(opcao.texto, "user");
+
+            if (opcao.texto === "❌ Nada, obrigado") {
+              container.remove();
+              return; // ← impede que o restante do código rode
+            }
+
+            addMessage(opcao.resposta, "bot");
+            container.remove();
+
+            const novoContainer = document.createElement("div");
+            novoContainer.style.display = "flex";
+            novoContainer.style.gap = "10px";
+            novoContainer.style.marginTop = "10px";
+            
+            const repetirBtn = document.createElement("button");
+            repetirBtn.className = "opcao-btn";
+            repetirBtn.style.marginTop = "10px";
+            repetirBtn.textContent = "🔁 Ver outras vagas";
+            repetirBtn.onclick = () => {
+              addMessage("Ver outras vagas", "user");
+              novoContainer.remove();
+              mostrarBotoesMaisOpcoes(); // Chama a função novamente
+            };
+
+            const naoBtn = document.createElement("button");
+            naoBtn.className = "opcao-btn";
+            naoBtn.textContent = "❌ Não, obrigado";
+            naoBtn.onclick = () => {
+              addMessage("Não, obrigado", "user");
+              novoContainer.remove();
+            };
+
+            novoContainer.appendChild(repetirBtn);
+            novoContainer.appendChild(naoBtn);
+            messagesDiv.appendChild(novoContainer);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+          };
+
+          container.appendChild(btn);
+      });
+      
+
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function mostrarBotoesMaisOpcoes() {
+      const messagesDiv = document.getElementById("messages");
+
+      // Botões de opções de benefícios
+      const opcoes = [
+        { 
+          texto: "Plano de saúde e odontológico", 
+          resposta: "<strong>Quem usa:</strong> Funcionário e dependentes (cônjuge, filhos, às vezes pais). <br> <strong>Onde usar:</strong> Clínicas e hospitais redenciados pela operadora SaúdePrime. \n <strong>Inclui:</strong> Consultas, exames, internação e tratamentos odontológicos." },
+        { 
+          texto: "Vale-alimentação", 
+          resposta: "<strong>Quem usa:</strong> Exclusivo para o funcionário. \n <strong>Onde usar:</strong> Restaurantes e supermercados parceiros, como RestaurantesGourmet e upermercadoTop. \n <strong>Inclui:</strong> Crédito mensal para alimentação, não pode ser usado por familiares." },
+        { 
+          texto: "Convênio com academias (Gympass)", 
+          resposta: "<strong>Quem usa:</strong> Funcionário, podendo incluir cônjuge e filhos. \n <strong>Onde usar:</strong> Academias e estúdios parceiros como FitLife Academy ou plataformas online. \n <strong>Inclui:</strong> Acesso a academias, atividades físicas, yoga, pilates e programas de bem-estar." },
+        { 
+          texto: "Programa de bem-estar e saúde mental", 
+          resposta: "<strong>Quem usa:</strong> Funciona para o funcionário, às vezes estendido a familiares. \n <strong>Onde usar:</strong> Clínicas de psicologia e plataformas como MindCare. \n <strong>Inclui:</strong> Terapia psicológica, apoio emocional, meditação e workshops de bem-estar."},
+        { 
+          texto: "Parcerias com Cursos e Plataformas de Aprendizado", 
+          resposta: "<strong>Quem usa:</strong> Funcionário, podendo incluir familiares em alguns casos. \n <strong>Onde usar:</strong> Plataformas de aprendizado como EducaTech ou cursos presenciais parceiros. \n <strong>Inclui:</strong> Acesso a cursos, certificações e treinamentos profissionais."},
+        { 
+          texto: "❌ Nada, obrigado", 
+          resposta: "" }
+      ];
+
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");
+
+          if (opcao.texto === "❌ Nada, obrigado") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+          addMessage(opcao.resposta, "bot");
+          container.remove();
+
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          const repetirBtn = document.createElement("button");
+          repetirBtn.className = "opcao-btn";
+          repetirBtn.style.marginTop = "10px";
+          repetirBtn.textContent = "🔁 Ver outros benefícios";
+          repetirBtn.onclick = () => {
+            addMessage("Ver outros benefícios", "user");
+            novoContainer.remove();
+            mostrarBotoesMaisOpcoes(); // Chama a função novamente
+          };
+
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    document.getElementById("userInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
